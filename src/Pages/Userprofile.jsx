@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
@@ -7,6 +8,33 @@ import Header from '../Components/Header';
 import Footer from '../Components/Footer'
 
 function Userprofile(props) {
+    const initialData = [
+        { label: 'User Name', value: 'Mark Son Goku', isEditMode: false },
+        { label: 'Age', value: '20', isEditMode: false },
+        { label: 'Update Password', value: '********', isEditMode: false },
+        { label: 'Update Password', value: '', isEditMode: false },
+    ];
+
+    const [tableData, setTableData] = useState(initialData);
+    const [adhocUpdate, setAdhoc] = useState(false);
+
+    const handleEditClick = (index) => {
+        const updatedTableData = tableData.map((data, i) =>
+            i === index ? { ...data, isEditMode: true } : data
+        );
+        setTableData(updatedTableData);
+        setAdhoc(false);
+    };
+
+    const handleAdhoc = (index) => {
+        const updatedTableData = tableData.map((data, i) =>
+            i === index ? { ...data, isEditMode: false } : data
+        );
+        setTableData(updatedTableData);
+        setAdhoc(true);
+    };
+
+
     return (
         <div className=''>
             <Header {...props} />
@@ -29,21 +57,38 @@ function Userprofile(props) {
                 <div className=''>
                     <Table >
                         <tbody>
-                            <tr>
-                                <td className='fw-bold'>User Name</td>
-                                <td>Mark Son Goku</td>
-                                <td><Button className='btn-primary pb-2'><PencilSquare /></Button></td>
-                            </tr>
-                            <tr>
-                                <td className='fw-bold'>Age</td>
-                                <td>22</td>
-                                <td><Button className='btn-primary pb-2'><PencilSquare /></Button></td>
-                            </tr>
-                            <tr>
-                                <td className='fw-bold'>update Password</td>
-                                <td >***********</td>
-                                <td><Button className='btn-primary pb-2'><PencilSquare /></Button></td>
-                            </tr>
+                            {tableData.map((data, index) => (
+                                <tr key={index}>
+                                    <td className='fw-bold'>{data.label}</td>
+                                    <td>
+                                        {data.isEditMode ? (
+                                            <Form className='d-flex'>
+                                                <Form.Group controlId='username' className='mx-4'>
+                                                    <Form.Control
+                                                        type='text'
+                                                        placeholder={`Enter new ${data.label}`}
+                                                    />
+                                                </Form.Group>
+                                                <Button
+                                                    className='px-4'
+                                                    variant='primary'
+                                                    type='submit'
+                                                    onClick={() => handleAdhoc(index)}
+                                                >
+                                                    save
+                                                </Button>
+                                            </Form>
+                                        ) : (
+                                            data.value
+                                        )}
+                                    </td>
+                                    <td>
+                                        <Button className='btn-primary pb-2'>
+                                            <PencilSquare onClick={() => handleEditClick(index)} />
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </Table>
                 </div>
