@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom'; **
+import { useNavigate } from 'react-router-dom'; 
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -8,7 +8,7 @@ import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 
 function Login() {
-  // const navigateTo = useNavigate(); **
+  const navigateTo = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
   const [isError, setIsError] = useState(true);
@@ -22,16 +22,15 @@ function Login() {
     event.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.post(`http://localhost:3000/users/login`, formData);
+      const response = await axios.post(`http://localhost:3000/users/login`, formData, {withCredentials: true});
       setFormData({
         email: '',
         password: ''
-      })
-
-      console.log(response.headers)
+      });
+      console.log(response);
       setResponseMessage(response.data.message);
       setIsError(false);
-      // navigateTo('/all-tasks'); **
+      navigateTo('/all-tasks');
     }
     catch (err) {
       setResponseMessage(err.response.data.error);

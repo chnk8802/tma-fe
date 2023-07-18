@@ -11,8 +11,7 @@ function Userprofile(props) {
     const initialData = [
         { label: 'User Name', value: 'Mark Son Goku', isEditMode: false },
         { label: 'Age', value: '20', isEditMode: false },
-        { label: 'Update Password', value: '********', isEditMode: false },
-        { label: 'Update Password', value: '', isEditMode: false },
+        { label: 'Update Password', value: '********', isEditMode: false }
     ];
 
     const [tableData, setTableData] = useState(initialData);
@@ -50,7 +49,7 @@ function Userprofile(props) {
                     <Form>
                         <Form.Group controlId="formFile" className="mb-3">
                             <Form.Label>Upload New Profile Picture</Form.Label>
-                            <Form.Control type="file" />
+                            <Form.Control type='file' />
                         </Form.Group>
                     </Form>
                 </div>
