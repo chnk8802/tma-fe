@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Form } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
@@ -8,13 +9,13 @@ import Header from '../Components/Header';
 import Footer from '../Components/Footer'
 
 function Userprofile(props) {
-    const initialData = [
-        { label: 'User Name', value: 'Mark Son Goku', isEditMode: false },
-        { label: 'Age', value: '20', isEditMode: false },
-        { label: 'Update Password', value: '********', isEditMode: false }
+    let initialUserData = [
+        { label: 'User Name', isEditMode: false },
+        { label: 'Age', isEditMode: false },
+        { label: 'Update Password', isEditMode: false }
     ];
+    const [tableData, setTableData] = useState(initialUserData);
 
-    const [tableData, setTableData] = useState(initialData);
     const [adhocUpdate, setAdhoc] = useState(false);
 
     const handleEditClick = (index) => {
@@ -30,9 +31,21 @@ function Userprofile(props) {
             i === index ? { ...data, isEditMode: false } : data
         );
         setTableData(updatedTableData);
-        setAdhoc(true);
     };
 
+    useEffect(() => {
+        const getUserData = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/users/me', {withCredentials: true})
+                const userData = response.data.user;
+                initialUserData = userData;
+                console.log(initialUserData)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getUserData();
+    },[]);
 
     return (
         <div className=''>
@@ -98,23 +111,4 @@ function Userprofile(props) {
 }
 
 export default Userprofile;
-
-// import { useState } from 'react';
-// import ProfilePicture from '../Components/ProfilePicture';
-// import Form from 'react-bootstrap/esm/Form';
-
-// function Userprofile() {
-//     const [isEditMode, setIsEditMode] = useState(false);
-//     const handleEditMode = () => {
-//         setIsEditMode(!isEditMode);
-//     };
-//     return (
-//         <div className='d-flex flex-column justify-content-center'>
-//             <div className='p-5'>
-//                 <ProfilePicture imageDimension={{ width: "10rem", height: "10rem" }} imageSource={"https://www.cartonionline.com/wordpress/wp-content/uploads/2023/02/goku.jpg"} thumbnail={true} />
-//             </div>
-//         </div>
-//     );
-// }
-
-// export default Userprofile;
+    
