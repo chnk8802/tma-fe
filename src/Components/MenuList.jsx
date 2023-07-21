@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 import ListGroup from 'react-bootstrap/ListGroup';
 
 function MenuList() {
@@ -6,6 +7,21 @@ function MenuList() {
   const handleClick = () => {
     setActiveKey(true);
   }
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post('http://localhost:3000/users/logout',{}, {withCredentials: true});
+    } catch (error) {
+      console.log(error.response.data)
+    }
+}
+  const handleLogoutAll = async () => {
+        const response = await axios.post('http://localhost:3000/users/logoutAll',{}, {withCredentials: true})
+        console.log(response);
+}
+  const handleDeleteUser = async () => {
+        const response = await axios.delete('http://localhost:3000/users/me', {withCredentials: true})
+        console.log(response);
+}
 
   return (
     <ListGroup id="menu-list-group" className="rounded-0 pt-5">
@@ -18,13 +34,13 @@ function MenuList() {
       <ListGroup.Item activekey={activeKey ? "active" : ""} action href="./about" onClick={handleClick}>
         About
       </ListGroup.Item>
-      <ListGroup.Item activekey={activeKey ? "active" : ""} action href="#logout" onClick={handleClick}>
+      <ListGroup.Item activekey={activeKey ? "active" : ""} action href="#logout" onClick={handleLogout}>
         Logout
       </ListGroup.Item>
-      <ListGroup.Item activekey={activeKey ? "active" : ""} action href="#logout-all" onClick={handleClick}>
+      <ListGroup.Item activekey={activeKey ? "active" : ""} action href="#logout-all" onClick={handleLogoutAll}>
         Logout All Sessions
       </ListGroup.Item>
-      <ListGroup.Item activekey={activeKey ? "active" : ""} className='text-danger' id="list-item-delete" action href="#delete" onClick={handleClick}>
+      <ListGroup.Item activekey={activeKey ? "active" : ""} className='text-danger' id="list-item-delete" action href="#delete" onClick={handleDeleteUser}>
         Delete Profile
       </ListGroup.Item>
     </ListGroup>

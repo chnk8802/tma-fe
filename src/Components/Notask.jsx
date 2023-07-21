@@ -1,7 +1,7 @@
-function Notask() {
+function Notask({message}) {
   return (
     <div className="h-50 d-flex align-items-center justify-content-center ">
-      <p>No tasks created yet. Create a task</p>
+      <p>{message}</p>
     </div>
   );
 }

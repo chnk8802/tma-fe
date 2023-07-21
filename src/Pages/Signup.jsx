@@ -6,6 +6,8 @@ import Button from 'react-bootstrap/Button';
 import { Spinner } from 'react-bootstrap';
 import Header from '../Components/Header'
 import Footer from '../Components/Footer';
+import { BASE_URL, requestConfig } from '../api/api';
+import ENDPOINTS from '../api/endpoints';
 
 function Signup() {
   const navigateTo = useNavigate();
@@ -23,9 +25,7 @@ function Signup() {
     event.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.post(`http://localhost:3000/users/signup`, formData, {
-        withCredentials: true,
-      });
+      const response = await axios.post(BASE_URL + ENDPOINTS.signup, formData, requestConfig);
       setFormData({
         name: '',
         email: '',
@@ -43,7 +43,7 @@ function Signup() {
       setIsLoading(false); // Reset the loading state to false when the request is complete (success or error)
     }
   };
-
+// Clear Error Message
   useEffect(() => {
     let timer;
     if (responseMessage) {
@@ -99,6 +99,7 @@ function Signup() {
               <h6>{responseMessage}</h6>
             </div>
           )}
+          
           <Button variant="primary" type="submit" disabled={isLoading}>
             {isLoading ? 'Signing up...' : 'Signup'}
           </Button>

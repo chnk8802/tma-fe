@@ -12,55 +12,18 @@ function Task({
   completed,
   isNew,
   onSave,
-  isError,
+  getTasks
 }) {
+
+  /*------ Show response of New task created or not------*/
+  const [responseMessage, setResponseMessage] = useState('');
+  const [isError, setIsError] = useState(true);
+
   /*------ Save data of New task------*/
   const [isEditMode, setIsEditMode] = useState(isNew);
   const [taskTitle, setTaskTitle] = useState(title);
   const [taskDescription, setTaskDescription] = useState(description);
   const [taskCompleted, setCompleted] = useState(completed);
-  /*------ Save data of New task------*/
-
-  /*------Edit task------*/
-  const handleEditMode = () => {
-    setIsEditMode(!isEditMode);
-  };
-  /*------Edit task------*/
-
-  /*------Delete task------*/
-  const handleTaskDeleted = async (_ID) => {
-    console.log(_ID);
-    try {
-      const response = await axios.delete(
-        `http://localhost:3000/tasks/${_ID}`,
-        { withCredentials: true }
-      );
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  /*------Delete task------*/
-  /*------update task------*/
-  const handleTaskUpdate = async (_ID) => {
-    console.log(_ID);
-    try {
-      const response = await axios.patch(
-        `http://localhost:3000/tasks/${_ID}`,
-        {
-          title: taskTitle,
-          description: taskDescription,
-          completed: taskCompleted,
-        },
-        { withCredentials: true }
-      );
-      console.log(response);
-      setIsEditMode(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  /*------update task------*/
 
   /*------ Save data of New task------*/
   const handleSubmit = async (event) => {
@@ -74,16 +37,79 @@ function Task({
           completed: taskCompleted,
         },
         { withCredentials: true }
+        );
+        setIsEditMode(false);
+        console.log(response.data.message);
+        setResponseMessage(response.data.message);
+        setIsError(false)
+        onSave(tempID, taskTitle, taskDescription, taskCompleted);
+        getTasks();
+      } catch (error) {
+        if (error) {
+          console.log(error.response.data.Error);
+          setResponseMessage(error.response.data.Error);
+          setIsError(true);
+      }
+    }
+  };
+  
+  // Clear Error Message
+  useEffect(() => {
+    let timer;
+    if (responseMessage) {
+      timer = setTimeout(() => {
+        setResponseMessage('');
+      }, 1000);
+    }
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [responseMessage]);
+
+  /*------Edit task------*/
+  const handleEditMode = () => {
+    setIsEditMode(!isEditMode);
+  };
+
+  /*------update task------*/
+  const handleTaskUpdate = async (_ID) => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:3000/tasks/${_ID}`,
+        {
+          title: taskTitle,
+          description: taskDescription,
+          completed: taskCompleted,
+        },
+        { withCredentials: true }
       );
       console.log(response);
-      onSave(tempID, taskTitle, taskDescription, taskCompleted);
       setIsEditMode(false);
+      setResponseMessage(response.data.message);
+      setIsError(false);
+      getTasks();
+    } catch (error) {
+      console.log(error);
+      setResponseMessage(error.response.data.Error);
+      setIsError(true)
+    }
+  };
+
+  /*------Delete task------*/
+  const handleTaskDeleted = async (_ID) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3000/tasks/${_ID}`,
+        { withCredentials: true }
+      );
+      console.log(response);
+      getTasks();
     } catch (error) {
       console.log(error);
     }
   };
 
-  /*------ Save data of New task------*/
+
   return (
     <div className={`d-flex justify-content-center align-items-center py-2`}>
       <Form
@@ -146,11 +172,11 @@ function Task({
         </Form.Group>
 
         {/* ==== Task saving Error Display ==== */}
-        {isError ? (
-          <h6 className="text-danger">{"Error: Task not saved!"}</h6>
-        ) : (
-          <h6 className="text-success">{"Task saved!"}</h6>
-        )}
+        {responseMessage && (
+            <div className={isError ? 'text-danger py-2' : 'text-success d-flex gap-3 py-2'}>
+              <h6>{responseMessage}</h6>
+            </div>
+          )}
 
           {isEditMode ? 
         <Form.Group>

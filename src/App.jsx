@@ -21,12 +21,12 @@ function App() {
       <Routes>
         <Route path="/" Component={Home}></Route>
         <Route path="/all-tasks" element={<PrivateRoutes>
-          <Userpanel show={show} handleClose={handleClose} toggleShow={toggleShow} imageSource={"https://www.cartonionline.com/wordpress/wp-content/uploads/2023/02/goku.jpg"} />
+          <Userpanel show={show} handleClose={handleClose} toggleShow={toggleShow} imageSource={"./src/assets/images/pepega.png"} />
         </PrivateRoutes>}></Route>
-        <Route path="/profile" element={<Userprofile show={show} handleClose={handleClose} toggleShow={toggleShow} imageSource={"https://www.cartonionline.com/wordpress/wp-content/uploads/2023/02/goku.jpg"} />}></Route>
+        <Route path="/profile" element={<Userprofile show={show} handleClose={handleClose} toggleShow={toggleShow} imageSource={"./src/assets/images/pepega.png"} />}></Route>
         <Route path="/signup" Component={Signup}></Route>
         <Route path="/login" Component={Login}></Route>
-        <Route path="/about" element={<About show={show} handleClose={handleClose} toggleShow={toggleShow} imageSource={"https://www.cartonionline.com/wordpress/wp-content/uploads/2023/02/goku.jpg"} />}></Route>
+        <Route path="/about" element={<About show={show} handleClose={handleClose} toggleShow={toggleShow} imageSource={"./src/assets/images/pepega.png"} />}></Route>
       </Routes>
     </Router>
   );

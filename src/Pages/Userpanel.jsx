@@ -5,24 +5,27 @@ import Task from "../Components/Task";
 import Notask from "../Components/Notask";
 import Footer from "../Components/Footer";
 import CreateTaskButton from "../Components/CreateTaskButton";
+import { BASE_URL, requestConfig } from "../api/api";
+import ENDPOINTS from "../api/endpoints";
 
 let items = [];
-function Userpanel(props) {
+function Userpanel(props) { 
+  const [responseMessage, setResponseMessage] = useState('');
   const [tasks, setTasks] = useState(items);
 
-  /*------ Save Data of New task------*/
+  /*------ Show Existing task------*/
+  const getTasks = async () => {
+      try {
+          const response = await axios.get(BASE_URL+ ENDPOINTS.getTasks, requestConfig);
+          setTasks(response.data.map((task, index) => ({ ...task, tempID: index, isNew: false })));
+        } catch (err) {
+          console.log(err.response.data.Error);
+          setResponseMessage(err.response.data.Error);
+        }
+  }
+
   useEffect(() => {
-    const getUserTasks = async () => {
-        try {
-            const response = await axios.get(`http://localhost:3000/tasks`, {
-              withCredentials: true,
-            });
-            setTasks(response.data.map((task, index) => ({ ...task, tempID: index, isNew: false })));
-          } catch (err) {
-            console.log(err);
-          }
-    }
-    getUserTasks();
+    getTasks();
   },[]);
 
   /*------ Save Data of New task------*/
@@ -54,7 +57,7 @@ function Userpanel(props) {
           <CreateTaskButton handleTaskCreation={handleTaskCreation} />
         </div>
         {tasks.length === 0 ? (
-          <Notask />
+          <Notask message={responseMessage ? responseMessage : 'Create some tasks'}/>
         ) : (
           tasks
             .map((task) => (
@@ -66,6 +69,7 @@ function Userpanel(props) {
                 completed={task.completed}
                 isNew={task.isNew}
                 onSave={handleTaskSave}
+                getTasks={getTasks}
               />
             )).reverse()
         )}
