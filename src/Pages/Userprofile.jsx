@@ -74,9 +74,10 @@ function Userprofile(props) {
                 return;
                 }
               const response = await axios.get(`http://localhost:3000/users/${user._id}/avatar`, {
+                responseType: 'arraybuffer',
                   withCredentials: true,
                 });
-                // console.log(response.data);
+                console.log(response);
                 // Convert the binary data to a Blob
                 const blob = new Blob([response.data], { type: 'image/png' });
                 const profilePicUrl = URL.createObjectURL(blob); 
