@@ -9,7 +9,7 @@ import Footer from '../Components/Footer';
 import { BASE_URL, requestConfig } from '../api/api';
 import ENDPOINTS from '../api/endpoints';
 
-function Signup() {
+function Signup(props) {
   const navigateTo = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
@@ -64,10 +64,10 @@ function Signup() {
   };
 
   return (
-    <div className='d-flex flex-column align-items-between vh-100'>
-      <Header />
+    <div className='d-flex flex-column align-items-between vh-100' >
+      <Header {...props}/>
       <div className='d-flex justify-content-center align-items-center flex-grow-1'>
-        <Form className="p-5 border rounded" noValidate onSubmit={handleSubmit}>
+        <Form className="p-5 border rounded mx-4" noValidate onSubmit={handleSubmit} style={{width: "30rem"}}>
           <Form.Group className="mb-3" controlId="formGroupName-su">
             <Form.Label>Name</Form.Label>
             <Form.Control required type="text" name='name' placeholder="Enter Username" value={formData.name} onChange={handleChange} disabled={isLoading} />

@@ -7,7 +7,7 @@ import { Spinner } from 'react-bootstrap';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 
-function Login() {
+function Login(props) {
   const navigateTo = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
@@ -61,9 +61,9 @@ function Login() {
 
   return (
     <div className='vh-100 d-flex flex-column'>
-      <Header />
+      <Header {...props}/>
       <div className="d-flex justify-content-center align-items-center flex-grow-1">
-        <Form className="dark p-5 border rounded" noValidate onSubmit={handleSubmit}>
+        <Form className="p-5 border rounded" noValidate onSubmit={handleSubmit} >
           <Form.Group className="mb-3" controlId="formGroupEmail-lu">
             <Form.Label>Email address</Form.Label>
             <Form.Control required type="email" placeholder="Enter email" name='email' value={formData.email} onChange={handleChange} disabled={isLoading} />

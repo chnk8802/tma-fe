@@ -1,6 +1,7 @@
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import SidebarMenu from './SidebarMenu';
+import ToggleCheckButton from './ToggleButton';
 
 
 function Header(props) {
@@ -11,7 +12,10 @@ function Header(props) {
           <Container fluid>
             <div></div>
             <Navbar.Brand className='fs-4 fw-bold text-primary' href="./">Task Manager App</Navbar.Brand>
-            <SidebarMenu {...props} />
+            <div className='d-flex align-items-center'>
+              <ToggleCheckButton/>
+            <SidebarMenu {...props}/>
+            </div>
           </Container>
         </Navbar>
       ))}

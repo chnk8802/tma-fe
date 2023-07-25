@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 import { Form } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import {Spinner} from "react-bootstrap";
@@ -21,15 +22,16 @@ function Userprofile(props) {
     age: user.age || '',
     password: user.password || ''
   });
+  const [token, setToken] = useState('');
+
+
   const handleChange = (event) => {
     setFormData({
       ...formData,
       [event.target.name]: event.target.value,
     });
-    console.log(formData);
   };
-
-  // Clear Error Message
+  /*--------Clear Error Message--------*/
   useEffect(() => {
     let timer;
     if (responseMessage) {
@@ -55,7 +57,7 @@ function Userprofile(props) {
       // console.log(response.data.user._id);
       setIsLoading(false)
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setIsError(true);
       setIsLoading(false)
       setResponseMessage(error.response.data.Error);
@@ -78,7 +80,7 @@ function Userprofile(props) {
     event.preventDefault();
     try {
       if (!selectedFile) {
-        console.log("Please select a file.");
+        // console.log("Please select a file.");
         setIsError(true);
         setResponseMessage("Please select a file!");
         setIsLoading(false);
@@ -99,14 +101,14 @@ function Userprofile(props) {
           },
         }
       );
-      console.log(response.data.message);
+      // console.log(response.data.message);
       setIsError(false);
       setResponseMessage(response.data.message);
       getUserAvatar();
       setIsLoading(false);
       setIsEditMode(false);
     } catch (error) {
-      console.log(error.response.data.error);
+      // console.log(error.response.data.error);
       setIsError(true);
       setResponseMessage(error.response.data.error);
       setIsEditMode(true);
@@ -114,8 +116,6 @@ function Userprofile(props) {
   };
 
   /*--------Get User Avatar--------*/
-
-
   const getUserAvatar = async () => {
     setIsLoading(true);
     try {
@@ -130,16 +130,14 @@ function Userprofile(props) {
           withCredentials: true,
         }
       );
-      // console.log(response);
       // Convert the binary data to a Blob
       const blob = new Blob([response.data], { type: "image/png" });
       const profilePicUrl = URL.createObjectURL(blob);
       setProfilePic(profilePicUrl);
-      setIsLoading(false);
+      setIsLoading(false); 
     } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-      // setResponseMessage(error);
+      setProfilePic("./src/assets/images/pepega.png");
+      setIsLoading(false)
     }
   };
     useEffect(() => {
@@ -195,16 +193,40 @@ const handleUserDataUpdate = async (event) => {
   };
 
   const handleDeleteProfilePicture = async () => {
+    setIsLoading(true)
     try {
-      const response = await axios.delete("http://localhost:3000/users/me", {
+      if (!user._id) {
+        return;
+      }
+      await axios.delete(`http://localhost:3000/users/me/avatar`, {
           withCredentials: true,
         });
-      console.log(response)
-    } catch (error) {
-      console.log(error)
-      
+        setProfilePic("./src/assets/images/pepega.png");
+        setIsError(true)
+        setIsLoading(false)
+        setResponseMessage("Profile picture deleted successfully")
+      } catch (error) {
+      setIsError(true)
+      setIsLoading(false)
+      setResponseMessage("Profile picture failed to delete")      
     }
   }
+
+  useEffect(() => {
+    const getCookie = async () => {
+      try {
+        const cookieToken = Cookies.get('token');
+        setToken(cookieToken);
+      } catch (error) {
+        console.error('Erro while getting cookies', error)
+        
+      }
+    }
+    getCookie();
+  },[])
+  useEffect(() => {
+    console.log(token);
+  },[token])
 
   return (
     <div className="">
@@ -216,7 +238,8 @@ const handleUserDataUpdate = async (event) => {
               </Spinner>
             </div>
             }
-      <Header {...props} />
+               <Header {...props } profilePic={profilePic}/>
+            
       {/* Show loader if loading state is true */}
       <div className="px-3 px-sm-5">
         <div className="mt-5">
@@ -239,7 +262,7 @@ const handleUserDataUpdate = async (event) => {
           </div>
 
           <div className="d-flex flex-column">
-            <span className="fs-1 fw-bold">{user?.name}</span>
+            <span className="fs-1 fw-bold">{user?.name}{token}</span>
             <span className="">{user?.email}</span>
           </div>
 
@@ -247,8 +270,8 @@ const handleUserDataUpdate = async (event) => {
             <div
               className={
                 isError
-                  ? "text-danger d-flex justify-content-center"
-                  : "text-success d-flex justify-content-center"
+                  ? "text-danger d-flex justify-content-center pt-5"
+                  : "text-success d-flex justify-content-center pt-5"
               }
             >
               <h6>{responseMessage}</h6>

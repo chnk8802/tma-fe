@@ -1,9 +1,11 @@
 import { Button } from "react-bootstrap";
 import Footer from "../Components/Footer";
+import Header from "../Components/Header";
 
-function Home() {
+function Home(props) {
     return (
         <div className="vh-100 d-flex flex-column">
+            <Header {...props}/>
             <div className="d-flex flex-column justify-content-center align-items-center flex-grow-1">
                 <h1 className="pb-4 fw-bold">Task Manager App</h1>
                 <div className="d-flex flex-wrap justify-content-center">
