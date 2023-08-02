@@ -15,7 +15,7 @@ function SidebarMenu({ show, toggleShow, handleClose, imageSource, profilePic })
     <div id="sidebar">
       <Button className="p-0 border-0 rounded-5" variant="primary" onClick={toggleShow} >
         <div className='rounded-circle bg-primary' style={{ padding: "3px" }}>
-          <ProfilePicture onClick={toggleShow} imageDimension={{ width: "45px", height: "45px" }} imageSource={profilePic ? profilePic : imageSource} />
+          <ProfilePicture onClick={toggleShow} imageDimension={{ width: "45px", height: "45px" }}/>
         </div>
       </Button>
       <Offcanvas className="" placement='start' show={show} onHide={handleClose} backdrop={false} scroll={true}>

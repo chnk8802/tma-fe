@@ -14,59 +14,24 @@ function App() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const toggleShow = () => setShow((s) => !s);
-
+ 
   return (
     <Router>
       <Routes>
-        <Route
-          path="/"
-          element={<Home imageSource={"./src/assets/images/avatar1.png"} />}
-        ></Route>
-        <Route
-          path="/all-tasks"
-          element={
-            <PrivateRoutes>
-              <Userpanel
-                show={show}
-                handleClose={handleClose}
-                toggleShow={toggleShow}
-                imageSource={"./src/assets/images/avatar1.png"}
-              />
-            </PrivateRoutes>
-          }
-        ></Route>
-        <Route
-          path="/profile"
-          element={
-            <PrivateRoutes>
-              <Userprofile
-                show={show}
-                handleClose={handleClose}
-                toggleShow={toggleShow}
-                imageSource={"./src/assets/images/avatar1.png"}
-              />
-            </PrivateRoutes>
-          }
-        ></Route>
-        <Route
-          path="/signup"
-          element={<Signup imageSource={"./src/assets/images/avatar1.png"} />}
-        ></Route>
-        <Route
-          path="/login"
-          element={<Login imageSource={"./src/assets/images/avatar1.png"} />}
-        ></Route>
-        <Route
-          path="/about"
-          element={
-            <About
-              show={show}
-              handleClose={handleClose}
-              toggleShow={toggleShow}
-              imageSource={"./src/assets/images/avatar1.png"}
-            />
-          }
-        ></Route>
+        <Route path="/" element={<Home />} ></Route>
+        <Route path="/all-tasks" element=
+        {<PrivateRoutes>
+          <Userpanel show={show} handleClose={handleClose} toggleShow={toggleShow}/>
+          </PrivateRoutes>}>
+        </Route>
+        <Route path="/profile" element=
+          {<PrivateRoutes>
+              <Userprofile show={show} handleClose={handleClose} toggleShow={toggleShow} />
+          </PrivateRoutes>}>
+        </Route>
+        <Route path="/signup" element={<Signup />}></Route>
+        <Route path="/login" element={<Login />} ></Route>
+        <Route path="/about" element={<About show={show} handleClose={handleClose} toggleShow={toggleShow} />}></Route>
       </Routes>
     </Router>
   );

@@ -83,15 +83,17 @@ function Task({
         },
         { withCredentials: true }
       );
+      console.log(completed)
       console.log(response);
       setIsEditMode(false);
       setResponseMessage(response.data.message);
       setIsError(false);
       getTasks();
     } catch (error) {
+      console.log(taskCompleted)
       console.log(error);
       setResponseMessage(error.response.data.Error);
-      setIsError(true)
+      setIsError(true);
     }
   };
 
@@ -109,7 +111,6 @@ function Task({
     }
   };
 
-
   return (
     <div className={`d-flex justify-content-center align-items-center py-2`}>
       <Form
@@ -125,16 +126,14 @@ function Task({
             <Form.Check
               className="m-0 d-flex align-items-center gap-3 fs-3"
               type="checkbox"
-              defaultChecked={completed}
-              // onChange={(e) => setCompleted(e.target.value)}
+              onChange={(e) => setCompleted(e.target.checked)}
             />
           ) : (
             <Form.Check
               className="m-0 d-flex align-items-center gap-3 fs-3"
               type="checkbox"
-              defaultChecked={completed}
-              onChange={(e) => setCompleted(e.target.value)}
               disabled={true}
+              defaultChecked={completed}
             />
           )}
         </Form.Group>

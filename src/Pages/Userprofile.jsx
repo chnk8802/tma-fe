@@ -1,6 +1,5 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { Form } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import {Spinner} from "react-bootstrap";
@@ -22,8 +21,6 @@ function Userprofile(props) {
     age: user.age || '',
     password: user.password || ''
   });
-  const [token, setToken] = useState('');
-
 
   const handleChange = (event) => {
     setFormData({
@@ -90,7 +87,7 @@ function Userprofile(props) {
       // Create a FormData object and append the selected file to it
       const formData = new FormData();
       formData.append("avatar", selectedFile);
-
+      
       const response = await axios.post(
         "http://localhost:3000/users/me/avatar",
         formData,
@@ -137,7 +134,7 @@ function Userprofile(props) {
       setIsLoading(false); 
     } catch (error) {
       setProfilePic("./src/assets/images/pepega.png");
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
     useEffect(() => {
@@ -212,21 +209,6 @@ const handleUserDataUpdate = async (event) => {
     }
   }
 
-  useEffect(() => {
-    const getCookie = async () => {
-      try {
-        const cookieToken = Cookies.get('token');
-        setToken(cookieToken);
-      } catch (error) {
-        console.error('Erro while getting cookies', error)
-        
-      }
-    }
-    getCookie();
-  },[])
-  useEffect(() => {
-    console.log(token);
-  },[token])
 
   return (
     <div className="">
@@ -238,8 +220,7 @@ const handleUserDataUpdate = async (event) => {
               </Spinner>
             </div>
             }
-               <Header {...props } profilePic={profilePic}/>
-            
+               <Header {...props}/>
       {/* Show loader if loading state is true */}
       <div className="px-3 px-sm-5">
         <div className="mt-5">
@@ -262,7 +243,7 @@ const handleUserDataUpdate = async (event) => {
           </div>
 
           <div className="d-flex flex-column">
-            <span className="fs-1 fw-bold">{user?.name}{token}</span>
+            <span className="fs-1 fw-bold">{user?.name}</span>
             <span className="">{user?.email}</span>
           </div>
 

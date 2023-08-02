@@ -13,7 +13,7 @@ function Header(props) {
             <div></div>
             <Navbar.Brand className='fs-4 fw-bold text-primary' href="./">Task Manager App</Navbar.Brand>
             <div className='d-flex align-items-center'>
-              <ToggleCheckButton/>
+              <ToggleCheckButton {...props}/>
             <SidebarMenu {...props}/>
             </div>
           </Container>

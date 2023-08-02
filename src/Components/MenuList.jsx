@@ -1,8 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Cookies from 'js-cookie';
 
 function MenuList() {
+  const navigateTo = useNavigate();
   const [activeKey, setActiveKey] = useState(false);
   const handleClick = () => {
     setActiveKey(true);
@@ -10,17 +13,29 @@ function MenuList() {
   const handleLogout = async () => {
     try {
       const response = await axios.post('http://localhost:3000/users/logout',{}, {withCredentials: true});
+      Cookies.remove('token');
+      navigateTo('/login');
     } catch (error) {
       console.log(error.response.data)
     }
 }
   const handleLogoutAll = async () => {
-        const response = await axios.post('http://localhost:3000/users/logoutAll',{}, {withCredentials: true})
-        console.log(response);
-}
+    try {
+      const response = await axios.post('http://localhost:3000/users/logoutAll',{}, {withCredentials: true});
+      Cookies.remove('token');
+      navigateTo('/login');
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  }
   const handleDeleteUser = async () => {
-        const response = await axios.delete('http://localhost:3000/users/me', {withCredentials: true})
-        console.log(response);
+    try {
+      const response = await axios.delete('http://localhost:3000/users/me', {withCredentials: true});
+      Cookies.remove('token');
+      navigateTo('/login');
+    } catch (error) {
+      console.log(error.response.data);
+    }
 }
 
   return (
