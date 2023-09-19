@@ -9,7 +9,6 @@ import Footer from '../Components/Footer';
 
 function Login(props) {
   const navigateTo = useNavigate();
-  // const [token, setToken] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
   const [isError, setIsError] = useState(true);
@@ -27,10 +26,10 @@ function Login(props) {
         email: '',
         password: ''
       });
-      // console.log(response);
+      console.log(response);
       setResponseMessage(response.data.message);
       setIsError(false);
-      navigateTo('/all-tasks');
+      navigateTo('/dashboard');
     }
     catch (err) {
       setResponseMessage(err.response.data.error);

@@ -101,7 +101,7 @@ function Userprofile(props) {
       // console.log(response.data.message);
       setIsError(false);
       setResponseMessage(response.data.message);
-      getUserAvatar();
+      // getUserAvatar(user._id);
       setIsLoading(false);
       setIsEditMode(false);
     } catch (error) {
@@ -113,15 +113,15 @@ function Userprofile(props) {
   };
 
   /*--------Get User Avatar--------*/
-  const getUserAvatar = async () => {
+  const getUserAvatar = async (user_id) => {
     setIsLoading(true);
     try {
       // To wait for user data to be fetched to use `user._id` to get avatar
-      if (!user._id) {
+      if (!user_id) {
         return;
       }
       const response = await axios.get(
-        `http://localhost:3000/users/${user._id}/avatar`,
+        `http://localhost:3000/users/${user_id}/avatar`,
         {
           responseType: "arraybuffer",
           withCredentials: true,
@@ -131,6 +131,7 @@ function Userprofile(props) {
       const blob = new Blob([response.data], { type: "image/png" });
       const profilePicUrl = URL.createObjectURL(blob);
       setProfilePic(profilePicUrl);
+      console.log("getUserAvatar(user._id) Running");
       setIsLoading(false); 
     } catch (error) {
       setProfilePic("./src/assets/images/pepega.png");
@@ -138,8 +139,8 @@ function Userprofile(props) {
     }
   };
     useEffect(() => {
-  getUserAvatar();
-  }, [user._id]);
+  getUserAvatar(user._id);
+  }, []);
 
   /*---------Update user data---------*/
 const handleUserDataUpdate = async (event) => {
@@ -227,9 +228,7 @@ const handleUserDataUpdate = async (event) => {
           <div className="d-flex align-items-end">
             <ProfilePicture
               imageDimension={{ width: "10rem", height: "10rem" }}
-              imageSource={
-                profilePic ? profilePic : "./src/assets/images/pepega.png"
-              }
+              imageSource={ profilePic }
               thumbnail={true}
             />
 

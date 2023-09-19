@@ -166,7 +166,7 @@ function Task({
               required
             />
           ) : (
-            <Form.Label className="mb-3">{taskDescription}</Form.Label>
+            <p className="mb-3 text-break">{taskDescription}</p>
           )}
         </Form.Group>
 

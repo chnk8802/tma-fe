@@ -40,7 +40,7 @@ function MenuList() {
 
   return (
     <ListGroup id="menu-list-group" className="rounded-0 pt-5">
-      <ListGroup.Item activekey={activeKey ? "active" : ""} action href="./all-tasks" onClick={handleClick}>
+      <ListGroup.Item activekey={activeKey ? "active" : ""} action href="./dashboard" onClick={handleClick}>
         All Tasks
       </ListGroup.Item>
       <ListGroup.Item activekey={activeKey ? "active" : ""} action href="./profile" onClick={handleClick}>
